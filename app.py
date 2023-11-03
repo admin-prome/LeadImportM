@@ -28,19 +28,21 @@ def readDNIInData(entrada):
 
 def dnis_query(dnis):
     return f"""
-        select pnet_DocumentNumber as DNI 
-            from CRM.crm.LeadBase 
-            where pnet_DocumentNumber in ({dnis})
-        union all
-        select pnet_DocumentNumber as DNI 
-            from CRM.crm.ContactBase 
-            where pnet_DocumentNumber in ({dnis})
-        """
+            select pnet_DocumentNumber as DNI 
+                from [crm].[Lead] 
+                where pnet_DocumentNumber in ({dnis})
+            union all
+            select pnet_DocumentNumber as DNI 
+                from [crm].[ContactBase] 
+                where pnet_DocumentNumber in ({dnis})
+            """
         
 def zonification_query(localidad):
     return f"""
-        select TOP (1) * from comercial.dbo.Zonificacion_IC where localidad like '%{localidad}%'
-        """
+            select DL.pnet_name as Localidad, DL.pnet_District as Partido, DL.pnet_Zone as Zona, DL.pnet_SubsidiaryIdName as Sucursal
+                from [crm].[pnet_DistrictLocality] as DL
+                where DL.pnet_name like '%{localidad}%'
+            """
 
 def crear_archivo_sin_coincidencias(db_connection, entrada, archivo_salida):
     conexion = db_connection.connect()
@@ -304,7 +306,6 @@ def convert_excel_to_txt(db_connection, excel_file, txt_file, como_se_entero):
                     pais
                     ]
             txt_file.write(';'.join(row_data) + '\n')
-
 
 
 app = Flask(__name__)
