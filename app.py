@@ -323,18 +323,22 @@ def upload_file():
         if file.filename == '':
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M")
-            new_filename = f'salida.xlsx'
-            new_file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
-            file.save(new_file_path)
-            txt_filename = f'LEAD_IMPORT_MANUAL_{timestamp}.txt'
-            txt_file_path = os.path.join(app.config['UPLOAD_FOLDER'], txt_filename)
-            salida_filename = 'salida.xlsx'
-            salida_file_path = os.path.join(app.config['UPLOAD_FOLDER'], salida_filename)
-            crear_archivo_sin_coincidencias(connection, new_file_path, salida_file_path)
-            convert_excel_to_txt(connection, new_file_path, txt_file_path, como_se_entero)
-            return render_template('success.html', salida_filename=salida_filename)
+            try:
+                filename = secure_filename(file.filename)
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+                new_filename = f'salida.xlsx'
+                new_file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
+                file.save(new_file_path)
+                txt_filename = f'LEAD_IMPORT_MANUAL.txt'
+                txt_file_path = os.path.join(app.config['UPLOAD_FOLDER'], txt_filename)
+                salida_filename = 'salida.xlsx'
+                salida_file_path = os.path.join(app.config['UPLOAD_FOLDER'], salida_filename)
+                crear_archivo_sin_coincidencias(connection, new_file_path, salida_file_path)
+                convert_excel_to_txt(connection, new_file_path, txt_file_path, como_se_entero)
+                return render_template('success.html', salida_filename=salida_filename)
+            except Exception as e:
+                # Si ocurre una excepción, redirige a la página de error y pasa el nombre del archivo
+                return redirect(url_for('upload_error', filename=file.filename))
     return render_template('upload.html')
 
 
@@ -343,7 +347,7 @@ def uploaded_file(filename):
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     if not os.path.exists(file_path):
         return 'El archivo no existe.'
-    txt_filename = 'LEAD_IMPORT.txt'
+    txt_filename = 'LEAD_IMPORT_MANUAL.txt'
     txt_file_path = os.path.join(app.config['UPLOAD_FOLDER'], txt_filename)    
     print("file_path:", file_path)
     print("txt_file_path:", txt_file_path)    
@@ -358,12 +362,16 @@ def upload_success():
 
 @app.route('/download')
 def download_file():
-    txt_filename = f'LEAD_IMPORT_MANUAL_{datetime.now().strftime("%Y%m%d_%H%M")}.txt'
+    txt_filename = 'LEAD_IMPORT_MANUAL.txt'
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], txt_filename)
     if os.path.exists(file_path):
         return send_from_directory(app.config['UPLOAD_FOLDER'], txt_filename, as_attachment=True)
     else:
         return f'El archivo {txt_filename} no existe.'
+    
+@app.route('/upload_error/<filename>')
+def upload_error(filename):
+    return render_template('error.html', filename=filename)
 
 
 if __name__ == '__main__':
