@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Subir archivo Excel</title>
+  </head>
+  <body>
+    <h1>Subir archivo Excel</h1>
+    <form method="post" enctype="multipart/form-data">
+      <label for="comoseentero">Cómo se enteró:</label>
+      <select name="comoseentero" id="comoseentero">
+        <option value="000">Elegir origen de demanda</option>
+        <option value="00">Otros</option>    <!-- 100000000 -->
+        <option value="01">Campaña Especial</option>    <!-- 102610026 -->
+        <option value="02">Convenio Municipio</option>    <!-- 102610015 -->
+        <option value="03">Convenio Estratégico</option>    <!-- 102610019 -->
+        <option value="04">Acción en vía pública</option>    <!-- 102610000 -->
+        <option value="05">Call Center</option>    <!-- 102610001 -->
+        <option value="06">Recomendado</option>    <!-- 102610002 -->
+        <option value="07">Derivado BPBA</option>    <!-- 102610022 -->
+        <option value="08">Diario/Revista</option>    <!-- 102610003 -->
+        <option value="09">Convenio Tasa Subsidiada</option>    <!-- 102610023 -->
+        <option value="10">Convenio Segmentos</option>    <!-- 102610024 -->
+        <option value="11">Charlas Informativas</option>    <!-- 102610025 -->
+        <option value="12">Radio/TV</option>    <!-- 102610004 -->
+        <option value="13">Ferias/Eventos</option>    <!-- 102610005 -->
+        <option value="14">Eventos con Micro</option>    <!-- 102610014 -->
+        <option value="15">Ejecutivo Comercial</option>    <!-- 102610006 -->
+        <option value="16">Ejecutivo de Sucursal</option>    <!-- 102610018 -->
+        <option value="17">Ejecutivo en Capacitación</option>    <!-- 102610007 -->
+        <option value="18">Internet y Redes Sociales</option>    <!-- 102610008 -->
+        <option value="19">Reuniones, Municipios, Cámaras, Asociaciones y Mayoristas</option>    <!-- 102610009 -->
+        <option value="20">Sucursal Banco Provincia</option>    <!-- 102610010 -->
+        <option value="21">Contacto Estratégico (Sumate Conmigo)</option>    <!-- 102610011 -->
+        <option value="22">MicroEmpresario</option>    <!-- 102610012 -->
+        <option value="23">Base de Datos</option>    <!-- 102610016 -->
+        <option value="24">Mailing</option>    <!-- 102610017 -->
+        <option value="25">Reclamos</option>    <!-- 738920000 -->
+        <option value="26">Otro</option>    <!-- 102610013 -->
+        <option value="27">Recomendado Web</option>    <!-- 102610020 -->
+        <option value="28">Aliado Web</option>    <!-- 102610021 -->
+      </select>
+      <br>
+      <br>
+      <br>
+      <input type="file" name="file">
+      <input type="submit" value="Subir">
+    </form>
+  </body>
+</html>
+
